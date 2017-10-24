@@ -1,0 +1,36 @@
+version: '2'
+services:
+  mariadb:
+    image: 'bitnami/mariadb:10.1.28-r1'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - 'mariadb_data:/bitnami'
+    networks:
+      - db
+  owncloud:
+    image: 'bitnami/owncloud:latest'
+    labels:
+      kompose.service.type: nodeport
+    volumes:
+      - 'owncloud_data:/bitnami'
+    networks:
+      - app
+      - db
+    depends_on:
+      - mariadb
+    environment:
+      # Host for accessing OwnCloud
+      # note: this setting will only be applied on the first run
+      # ref: https://github.com/bitnami/bitnami-docker-owncloud#configuration
+      - OWNCLOUD_HOST=localhost
+volumes:
+  mariadb_data:
+    driver: local
+  owncloud_data:
+    driver: local
+networks:
+  db:
+    internal: true
+  app:
+    external: true

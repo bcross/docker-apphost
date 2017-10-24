@@ -1,0 +1,46 @@
+version: '2'
+services:
+  postgresql:
+    image: 'bitnami/postgresql:latest'
+    environment:
+      - POSTGRESQL_DATABASE=guacamole_db
+      - POSTGRESQL_PASSWORD=248vjUeJTsQF
+    volumes:
+      - 'postgresql_data:/bitnami'
+    networks:
+      - db
+  guacd:
+    image: 'guacamole/guacd:latest'
+    networks:
+      - service
+  guacamole:
+    image: 'guacamole/guacamole:latest'
+    depends_on:
+      - guacd
+      - postgresql
+    volumes:
+      - 'guacamole_data:/guacamole'
+    networks:
+      - db
+      - service
+      - app
+    environment:
+      - GUACD_HOSTNAME=guacd
+      - GUACD_PORT=4822
+      - POSTGRES_HOSTNAME=postgresql
+      - POSTGRES_DATABASE=guacamole_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=248vjUeJTsQF
+      - GUACAMOLE_HOME=/guacamole
+volumes:
+  postgresql_data:
+    driver: local
+  guacamole_data:
+    driver: local
+networks:
+  db:
+    internal: true
+  service:
+    internal: true
+  app:
+    external: true

@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  nginx:
+    image: 'bitnami/nginx:latest'
+    labels:
+      kompose.service.type: nodeport
+    ports:
+      - '80:8080'
+      - '443:8443'
+    networks:
+      - app
+    volumes:
+      - '/opt/certbot/www:/app'
+      - '/opt/nginx/vhosts:/bitnami/nginx/conf/vhosts:ro'
+      - '/etc/letsencrypt/live:/bitnami/certs/letsencrypt:ro'
+      - '/opt/nginx/ssl/nginx.crt:/bitnami/certs/nginx.crt:ro'
+      - '/opt/nginx/ssl/nginx.key:/bitnami/certs/nginx.key:ro'
+networks:
+  app:
+    external: true

@@ -1,0 +1,22 @@
+version: '2'
+services:
+  codiad:
+    image: 'bitnami/codiad:latest'
+    labels:
+      kompose.service.type: nodeport
+    networks:
+      - app
+    volumes:
+      - 'codiad_data:/bitnami'
+      - 'codiad_themes:/opt/bitnami/codiad/themes'
+      - 'codiad_plugins:/opt/bitnami/codiad/plugins'
+volumes:
+  codiad_data:
+    driver: local
+  codiad_themes:
+    driver: local
+  codiad_plugins:
+    driver: local
+networks:
+  app:
+    external: true
