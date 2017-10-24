@@ -1,4 +1,4 @@
-#Setup
+# Setup
 ## Install
 1. Download this repo to a folder. I have done all my testing in Ubuntu. It may also work in Debian. It will not work in a CentOS based distro (yet).
 1. If you want to install all the apps, run start.sh. Otherwise, run one of the scripts in the apps folder. Either way, sudo or run as root.
